@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Bitcoin</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bedrag_in_euro">Uw bedrag in Euro</string>
+    <string name="bedrag_in_bitcoin">Uw bedrag in Bitcoin</string>
+    <string name="naar_bitcoin">Naar Bitcoin</string>
+    <string name="naar_euro">Naar euro</string>
+
+</resources>
