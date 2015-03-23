@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">StopAfstand</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="SelectAfstand">Selecteer Afstand</string>
+    <string name="ReactieTijd">Selecteer reactie tijd</string>
+    <string name="wegtype">Selecteer weg type</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="droogRadioButton">Het wegdek light droog</string>
+    <string name="natRadioButton">Het wegdek light nat</string>
+    <string name="stopafstand">Bereken de stopafstand</string>
+    <string name="stopafstandResponse">De stopafstand is:</string>
+</resources>
