@@ -38,6 +38,15 @@ public class HoroscoopActivity extends ListActivity {
 
             return row;
         }
+        private int getResourceId(Data.Horoscoop horoscoop){
+            switch (horoscoop){
+                case WATERMAN:
+                    return R.drawable.waterman;
+                case VISSEN:
+                    return R.drawable.waterman;
+                default: return 0;
+            }
+        }
     }
 
 }
