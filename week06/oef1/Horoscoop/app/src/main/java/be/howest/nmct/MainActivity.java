@@ -19,9 +19,10 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends ActionBarActivity {
 public static final String EXTRA_BIRTHYEAR = "be.howest.nmct.week5oef1.BIRTHYEAR";
-    private Button btnGeboorteJaar;
+    private Button btnGeboorteJaar, btnHoroscoop;
     private TextView txtGeboortejaar;
     static final int REQUEST_BIRTHDAY = 1;
+    static final int Request_Horoscoop = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +35,19 @@ public static final String EXTRA_BIRTHYEAR = "be.howest.nmct.week5oef1.BIRTHYEAR
                 selecteerGeboortejaar(v);
             }
         });
+        btnHoroscoop = (Button) findViewById(R.id.btnHoroscoop);
+        btnHoroscoop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selecteerHoroscoop(v);
+            }
+        });
+    }
+    public void selecteerHoroscoop(View v){
+        Intent intent = new Intent(MainActivity.this, HoroscoopActivity.class);
+        startActivityForResult(intent, Request_Horoscoop);
 
     }
-
 //    @Override
 //    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
 ////        return super.onCreateView(parent, name, context, attrs);

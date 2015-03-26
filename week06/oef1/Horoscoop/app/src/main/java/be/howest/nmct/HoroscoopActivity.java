@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ public class HoroscoopActivity extends ListActivity {
 
             TextView textViewNaamHoroscoop = (TextView) row.findViewById(R.id.textViewnaamHoroscoop);
             textViewNaamHoroscoop.setText(horoscoop.getNaamHoroscoop());
+            ImageView imageview = (ImageView) row.findViewById(R.id.imageView);
+            imageview.setImageResource(getResourceId(horoscoop));
 
             return row;
         }
@@ -43,10 +46,23 @@ public class HoroscoopActivity extends ListActivity {
                 case WATERMAN:
                     return R.drawable.waterman;
                 case VISSEN:
-                    return R.drawable.waterman;
+                    return R.drawable.vissen;
+                case RAM:
+                    return R.drawable.ram;
+                case STIER:
+                    return R.drawable.stier;
+                case TWEELING:
+                    return R.drawable.tweeling;
+                case KREEFT:
+                    return R.drawable.kreeft;
+                case LEEUW:
+                    return R.drawable.leeuw;
+                case MAAGD:
+                    return R.drawable.maagd;
+                case WEEGSCHAAL:
+                    return R.drawable.weegschaal;
                 default: return 0;
             }
         }
     }
-
 }
