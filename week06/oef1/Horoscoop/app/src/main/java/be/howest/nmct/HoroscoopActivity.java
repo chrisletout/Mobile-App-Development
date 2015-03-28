@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Menu;
 
 
@@ -23,7 +24,24 @@ import android.widget.Toast;
  * Created by chris on 23/03/15.
  */
 public class HoroscoopActivity extends ListActivity {
-    class HoroscoopAdapter extends ArrayAdapter<Data.Horoscoop>{
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setListAdapter(new HoroscoopAdapter());
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+//        Data.Horoscoop horoscoop = (Data.Horoscoop) getListAdapter().getItem(position);
+        Data.Horoscoop selectedValue = (Data.Horoscoop) getListAdapter().getItem(position);
+        Log.d("testvalue",selectedValue.toString());
+        getIntent().putExtra("soort", selectedValue.toString());
+//        intent.putExtra(MainActivity.EXTRA_BIRTHYEAR, sGeboortejaar);
+        setResult(RESULT_OK, getIntent());
+        finish();
+    }
+
+    public class HoroscoopAdapter extends ArrayAdapter<Data.Horoscoop>{
        public HoroscoopAdapter(){
            super(HoroscoopActivity.this, R.layout.row_horoscoop, R.id.textViewnaamHoroscoop, Data.Horoscoop.values());
        }
