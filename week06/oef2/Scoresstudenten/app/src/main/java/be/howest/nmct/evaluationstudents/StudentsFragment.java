@@ -2,13 +2,22 @@ package be.howest.nmct.evaluationstudents;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+
+import java.text.DecimalFormat;
+
+import be.howest.nmct.evaluationsstudents.loader.Contract;
 
 
 /**
@@ -39,6 +48,35 @@ public class StudentsFragment extends ListFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment StudentsFragment.
      */
+
+
+    public class StudentAdapter extends SimpleCursorAdapter{
+        public StudentAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
+            super(context, layout, c, from, to, flags);
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            super.bindView(view, context, cursor);
+            ImageView icon = (ImageView) view.findViewById(R.id.imageView);
+
+            int colnr = cursor.getColumnIndex(Contract.StudentColumns.COLUMN_STUDENT_SCORE_TOTAL);
+            double score = cursor.getDouble(colnr);
+            DecimalFormat df = new DecimalFormat("##.00");
+            TextView textViewTotaleScore = (TextView) view.findViewById(R.id.textView1);
+            textViewTotaleScore.setText(df.format(score));
+
+            if(score < 8){
+                icon.setImageResource(R.mipmap.student_red);
+            }else if(score <10){
+                icon.setImageResource(R.mipmap.student_orange);
+            }else{
+                icon.setImageResource(R.mipmap.student_green);
+            }
+
+        }
+    }
+
     // TODO: Rename and change types and number of parameters
     public static StudentsFragment newInstance(String param1, String param2) {
         StudentsFragment fragment = new StudentsFragment();
