@@ -89,7 +89,7 @@ public class StudentenhuizenLoader extends AsyncTaskLoader<Cursor> {
 
                     else {
                         reader.skipValue();
-                    }
+                    }}
 
                 MatrixCursor.RowBuilder row = cursor.newRow();
                 row.add(id);
@@ -99,12 +99,13 @@ public class StudentenhuizenLoader extends AsyncTaskLoader<Cursor> {
                 row.add(aantalKamers);
                 id++;
 
-                reader.endObject();
+                    reader.endObject();
                 }
+
                 reader.endArray();
 
                 mCursor = cursor;
-            }
+//            }
         }catch (IOException ex){
             ex.printStackTrace();
 
