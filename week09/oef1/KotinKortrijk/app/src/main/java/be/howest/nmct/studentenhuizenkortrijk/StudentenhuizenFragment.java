@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
@@ -34,6 +36,7 @@ import be.howest.nmct.studentenhuizenkortrijk.loader.StudentenhuizenLoader;
 public class StudentenhuizenFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     SimpleCursorAdapter mAdapter;
     ListView mListContainer;
+    private String grid_currentQuery = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -55,6 +58,7 @@ public class StudentenhuizenFragment extends ListFragment implements LoaderManag
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
         String[] columns = new String[] {Contract.KotenColumns.COLUMN_ADRES,Contract.KotenColumns.COLUMN_HUISNUMMER,Contract.KotenColumns.COLUMN_GEMEENTE,Contract.KotenColumns.COLUMN_AANTAL_KAMERS};
         int[] viewIds = new int[]{R.id.textViewStraat, R.id.textViewHuisnummer, R.id.textViewGemeente, R.id.textViewAantalKamers};
         mAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row, null,columns, viewIds, 0);
@@ -77,8 +81,34 @@ public class StudentenhuizenFragment extends ListFragment implements LoaderManag
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_studentenhuizen, menu);
+        SearchView searchView = (SearchView)menu.findItem(R.id.search).getActionView();
+        searchView.setOnQueryTextListener(queryListener);
 
     }
+    final private SearchView.OnQueryTextListener queryListener = new SearchView.OnQueryTextListener() {
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            if (TextUtils.isEmpty(newText)) {
+//                getActivity().getActionBar().setSubtitle("List");
+                grid_currentQuery = null;
+            } else {
+//                getActivity().getActionBar().setSubtitle("List - Searching for: " + newText);
+                grid_currentQuery = newText;
+
+            }
+            getLoaderManager().restartLoader(0, null, StudentenhuizenFragment.this);
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            Toast.makeText(getActivity(), "Searching for: " + query + "...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    };
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
