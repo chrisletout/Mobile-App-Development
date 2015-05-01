@@ -19,6 +19,7 @@ import java.net.URL;
  */
 public class StudentenhuizenLoader extends AsyncTaskLoader<Cursor> {
     private Cursor mCursor;
+    String street;
     private final String[] mColumnNames = new String[]{
             BaseColumns._ID,
             Contract.KotenColumns.COLUMN_ADRES,
@@ -128,10 +129,39 @@ public class StudentenhuizenLoader extends AsyncTaskLoader<Cursor> {
     public Cursor loadInBackground() {
         if(mCursor == null)
             loadCursor();
-
+        else
+            return filterCusrsorOnStreet(street);
         return mCursor;
     }
+     private Cursor filterCusrsorOnStreet(String straat){
+         String[] mColumnNames = new String[]{
+                 BaseColumns._ID,
+                 Contract.KotenColumns.COLUMN_ADRES,
+                 Contract.KotenColumns.COLUMN_HUISNUMMER,
+                 Contract.KotenColumns.COLUMN_GEMEENTE,
+                 Contract.KotenColumns.COLUMN_AANTAL_KAMERS
+         };
+         MatrixCursor newCursor = new MatrixCursor(mColumnNames);
+         int colnr1 = mCursor.getColumnIndex(Contract.KotenColumns.COLUMN_ADRES);
+         int colnr2 = mCursor.getColumnIndex(Contract.KotenColumns.COLUMN_HUISNUMMER);
+         int colnr3 = mCursor.getColumnIndex(Contract.KotenColumns.COLUMN_GEMEENTE);
+         int colnr4 = mCursor.getColumnIndex(Contract.KotenColumns.COLUMN_AANTAL_KAMERS);
 
+         int id =1;
+         if(mCursor.moveToFirst()){
+             do {
+                 if(mCursor.getString(colnr1).toLowerCase().contains(straat.toLowerCase().trim())){
+                     MatrixCursor.RowBuilder row = newCursor.newRow();
+                     row.add(id++);
+                     row.add(mCursor.getString(colnr1));
+                     row.add(mCursor.getString(colnr2));
+                     row.add(mCursor.getString(colnr3));
+                     row.add(mCursor.getString(colnr4));
+                 }
+             } while (mCursor.moveToNext());
+         }
+         return newCursor;
+     }
 
     public class StudentenHuizenAdaptar extends SimpleCursorAdapter{
         public StudentenHuizenAdaptar(Context context, int layout, Cursor c, String[] from, int[] to) {

@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -46,10 +45,7 @@ public class StudentsFragment extends ListFragment implements LoaderManager.Load
 //    private OnFragmentInteractionListener mListener;
 
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-    }
+
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {

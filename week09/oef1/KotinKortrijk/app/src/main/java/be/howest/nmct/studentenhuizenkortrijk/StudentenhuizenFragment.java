@@ -76,6 +76,9 @@ public class StudentenhuizenFragment extends ListFragment implements LoaderManag
         // This is called when a new Loader needs to be created.
         //create and return a CursorLoader that will take care of
         // creating a Cursor for the data being displayed.
+//        if (!TextUtils.isEmpty(grid_currentQuery)) {
+//            return new StudentenhuizenLoader(getActivity(),grid_currentQuery);
+//        }
         return new StudentenhuizenLoader(getActivity());
     }
 
