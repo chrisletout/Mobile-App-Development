@@ -19,6 +19,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 import be.howest.nmct.evaluationsstudents.loader.Contract;
 import be.howest.nmct.evaluationsstudents.loader.StudentsLoader;
@@ -38,6 +39,7 @@ public class StudentsFragment extends ListFragment implements LoaderManager.Load
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     SimpleCursorAdapter mAdapter;
+    OnHeadlineSelectedListener mCallback;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -49,6 +51,30 @@ public class StudentsFragment extends ListFragment implements LoaderManager.Load
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+//        Object cursor = getListAdapter().getItem(position);
+
+        Cursor c = (Cursor)mAdapter.getItem(position);
+        c.moveToPosition(position);
+//        String item = c.getString(1);
+
+        mCallback.onArticleSelected(c);
+
+    }
+    public interface OnHeadlineSelectedListener {
+        public void onArticleSelected(Cursor position);
+    }
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnHeadlineSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override

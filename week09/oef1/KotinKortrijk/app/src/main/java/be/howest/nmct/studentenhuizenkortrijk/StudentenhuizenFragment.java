@@ -61,7 +61,7 @@ public class StudentenhuizenFragment extends ListFragment implements LoaderManag
         setHasOptionsMenu(true);
         String[] columns = new String[] {Contract.KotenColumns.COLUMN_ADRES,Contract.KotenColumns.COLUMN_HUISNUMMER,Contract.KotenColumns.COLUMN_GEMEENTE,Contract.KotenColumns.COLUMN_AANTAL_KAMERS};
         int[] viewIds = new int[]{R.id.textViewStraat, R.id.textViewHuisnummer, R.id.textViewGemeente, R.id.textViewAantalKamers};
-        mAdapter = new SimpleCursorAdapter(getActivity(),R.layout.row, null,columns, viewIds, 0);
+        mAdapter = new KotenAdapter(getActivity(),R.layout.row, null,columns, viewIds, 0);
 
 //        setListAdapter(mAdapter);
         setListAdapter(mAdapter);

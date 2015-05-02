@@ -1,17 +1,28 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="be.howest.nmct.evaluationstudents.StudentDetailsFragment">
+    tools:context="be.howest.nmct.evaluationstudents.StudentDetailsFragment"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/name" android:id="@+id/name" />
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/name" android:id="@+id/name"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp" />
     <GridView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/gridview2"></GridView>
+        android:id="@+id/gridview2"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"></GridView>
 
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Grade" android:id="@+id/grade" />
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Grade" android:id="@+id/grade"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"/>
 
-</FrameLayout>
+</LinearLayout>

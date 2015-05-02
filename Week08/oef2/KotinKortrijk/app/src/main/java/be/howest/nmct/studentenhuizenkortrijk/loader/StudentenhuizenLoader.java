@@ -7,6 +7,7 @@ import android.database.MatrixCursor;
 import android.provider.BaseColumns;
 import android.util.JsonReader;
 import android.util.JsonToken;
+import android.util.Log;
 import android.widget.SimpleCursorAdapter;
 
 import java.io.IOException;
@@ -109,7 +110,10 @@ public class StudentenhuizenLoader extends AsyncTaskLoader<Cursor> {
         }catch (IOException ex){
             ex.printStackTrace();
 
-        }finally {
+        }catch (Exception ex){
+            Log.d("error", ex.toString());
+        }
+        finally {
             try {
                 reader.close();
             }catch (IOException e){

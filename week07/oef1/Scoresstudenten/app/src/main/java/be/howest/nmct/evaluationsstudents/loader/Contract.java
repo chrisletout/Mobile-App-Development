@@ -12,4 +12,9 @@ public final class Contract{
         public static final String COLUMN_STUDENT_EMAIL = "Student_email";
         public static final String COLUMN_STUDENT_SCORE_TOTAL = "Student_score_total";
     }
+    public interface ModulePuntColumns extends BaseColumns{
+        public static final String COLUMN_MODULE_NAAM="module_naam";
+        public static final String COLUMN_MODULE_SCORE="module_sore";
+        public static final String COLUMN_MODULE_STUDIEPUNTEN="module_studiepunten";
+    }
 }

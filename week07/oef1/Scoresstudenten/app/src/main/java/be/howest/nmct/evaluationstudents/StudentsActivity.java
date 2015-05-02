@@ -1,5 +1,6 @@
 package be.howest.nmct.evaluationstudents;
 
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -13,7 +14,7 @@ import android.view.ViewGroup;
 import android.os.Build;
 
 
-public class StudentsActivity extends ActionBarActivity {
+public class StudentsActivity extends ActionBarActivity implements StudentsFragment.OnHeadlineSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class StudentsActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new StudentsFragment())
+                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -47,6 +49,15 @@ public class StudentsActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onArticleSelected(Cursor c) {
+        String name = c.getString(1);
+        String email = c.getString(2);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, StudentDetailsFragment.newInstance(name, email))
+                .commit();
     }
 
 //    @Override

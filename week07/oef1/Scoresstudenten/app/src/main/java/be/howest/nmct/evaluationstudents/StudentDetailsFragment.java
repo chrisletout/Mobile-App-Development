@@ -1,6 +1,7 @@
 package be.howest.nmct.evaluationstudents;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -39,11 +40,11 @@ public class StudentDetailsFragment extends Fragment {
      * @return A new instance of fragment StudentDetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StudentDetailsFragment newInstance(String param1, String param2) {
+    public static StudentDetailsFragment newInstance(String name, String email) {
         StudentDetailsFragment fragment = new StudentDetailsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, name);
+        args.putString(ARG_PARAM2, email);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,6 +70,7 @@ public class StudentDetailsFragment extends Fragment {
         name = (TextView)v.findViewById(R.id.name);
         grid = (GridView)v.findViewById(R.id.gridview2);
         grade = (TextView)v.findViewById(R.id.grade);
+        name.setText(getArguments().getString(ARG_PARAM1));
         return v;
     }
 
