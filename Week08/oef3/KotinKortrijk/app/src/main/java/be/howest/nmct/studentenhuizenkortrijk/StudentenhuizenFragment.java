@@ -6,6 +6,7 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +28,11 @@ import be.howest.nmct.studentenhuizenkortrijk.loader.Contract;
 import be.howest.nmct.studentenhuizenkortrijk.loader.StudentenhuizenLoader;
 
 public class StudentenhuizenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    SimpleCursorAdapter mAdapter;
+    RecyclerView.Adapter mAdapter;
     RecyclerView mRecyclerView;
+    Cursor mCursor;
+//    protected ChangeObserver mChangeObserver;
+    protected DataSetObserver mDataSetObserver;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -38,12 +43,16 @@ public class StudentenhuizenFragment extends Fragment implements LoaderManager.L
     }
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mAdapter.swapCursor(cursor);
+//        mAdapter.swapCursor(cursor);
+        mAdapter = new KotenAdapter(cursor);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
+
+
+        @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
+//        mAdapter.swapCursor(null);
     }
 
 //    @Override
@@ -74,7 +83,11 @@ public class StudentenhuizenFragment extends Fragment implements LoaderManager.L
 //        }
 //    }
     public class KotenAdapter extends RecyclerView.Adapter<KotenAdapter.KotViewHolder>{
-    public KotenAdapter(Cursor c){
+    private Cursor cursor;
+    public KotenAdapter(Cursor cursor){
+        this.cursor = cursor;
+    }
+    public KotenAdapter(){
 
     }
     @Override
@@ -88,23 +101,48 @@ public class StudentenhuizenFragment extends Fragment implements LoaderManager.L
 
     @Override
     public void onBindViewHolder(KotViewHolder kotViewHolder, int i) {
+        if(cursor != null){
+        Cursor ci = cursor;
+        cursor.moveToPosition(i);
+        int gemeenteIndex = cursor.getColumnIndex(Contract.KotenColumns.COLUMN_GEMEENTE);
+        int AdressIndex = cursor.getColumnIndex(Contract.KotenColumns.COLUMN_ADRES);
+        int huisnummerIndex = cursor.getColumnIndex(Contract.KotenColumns.COLUMN_HUISNUMMER);
+        int aantalKamersIndex = cursor.getColumnIndex(Contract.KotenColumns.COLUMN_AANTAL_KAMERS);
+        String gemeente = cursor.getString(gemeenteIndex);
+        String adres = cursor.getString(AdressIndex);
+        String huisnummer = cursor.getString(huisnummerIndex);
+        String aantalKamers = cursor.getString(aantalKamersIndex);
+        kotViewHolder.adres.setText(adres);
+        kotViewHolder.aantalKamers.setText(aantalKamers);
+        kotViewHolder.gemeente.setText(gemeente);
+        kotViewHolder.huisnummer.setText(huisnummer);}
 
+        kotViewHolder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("test", "test");
+            }
+        });
+
+//        contactViewHolder.vName.setText(ci.name);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return cursor.getCount()-1;
     }
 
     class KotViewHolder extends RecyclerView.ViewHolder{
 
-        TextView adres, huisnummer, gemeente, aantalKamers;
+        protected TextView adres, huisnummer, gemeente, aantalKamers;
+        protected CardView cv;
            public KotViewHolder(View itemView) {
                super(itemView);
                adres = (TextView) itemView.findViewById(R.id.textViewStraat);
                huisnummer = (TextView) itemView.findViewById(R.id.textViewHuisnummer);
                gemeente = (TextView) itemView.findViewById(R.id.textViewGemeente);
                aantalKamers = (TextView) itemView.findViewById(R.id.textViewAantalKamers);
+               cv = (CardView) itemView.findViewById(R.id.card_view);
            }
        }
 
@@ -155,11 +193,10 @@ public class StudentenhuizenFragment extends Fragment implements LoaderManager.L
         LinearLayoutManager llm = new LinearLayoutManager(this.getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(llm);
-//        StudentenhuizenLoader c = new StudentenhuizenLoader(this.getActivity());
-//        Cursor cs = c.loadInBackground();
-////        int total = cs.getCount();
-//        KotenAdapter ca = new KotenAdapter(cs);
-//        mRecyclerView.setAdapter(ca);
+
+        getLoaderManager().initLoader(0, null, this);
+//        mAdapter = new KotenAdapter();
+//        mRecyclerView.setAdapter(mAdapter);
         return v;
     }
 
