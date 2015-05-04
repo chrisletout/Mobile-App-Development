@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.view.View;
@@ -94,6 +96,20 @@ public class PolitieOvertredingFragment extends ListFragment implements LoaderMa
             super.bindView(view, context, cursor);
 //            ImageView icon = (ImageView) view.findViewById(R.id.imageView);
 
+            int aantalVoertuigen = cursor.getColumnIndex(Contract.snelheidColumns.COLUMN_GEPASSEERDE_VOERTUIGEN);
+            int voertuigenInOvertreding = cursor.getColumnIndex(Contract.snelheidColumns.COLUMN_VTG_IN_OVERTREDING);
+            int voer = cursor.getInt(aantalVoertuigen);
+            int overtreding = cursor.getInt(voertuigenInOvertreding);
+            float overtredingsgraad = ((float)overtreding) / voer;
+            if(overtredingsgraad > 0.3f)
+//                view.setBackgroundColor(Color.parseColor("#ff0000"));
+                view.setBackgroundColor(Color.RED);
+            else if(overtredingsgraad >= 0.2f && overtredingsgraad <=0.3f)
+//                view.setBackgroundColor(Color.parseColor("#f7a219"));
+                view.setBackgroundColor(Color.YELLOW);
+            else if (overtredingsgraad<0.2f)
+//                view.setBackgroundColor(Color.parseColor("#009c15"));
+                view.setBackgroundColor(Color.GREEN);
             int colControles = cursor.getColumnIndex(Contract.snelheidColumns.COLUMN_AANTAL_CONTROLES);
             int colMaand = cursor.getColumnIndex(Contract.snelheidColumns.COLUMN_MAAND);
             int colStraat = cursor.getColumnIndex(Contract.snelheidColumns.COLUMN_STRAAT);
@@ -104,6 +120,7 @@ public class PolitieOvertredingFragment extends ListFragment implements LoaderMa
             maand.setText(cursor.getString(colMaand));
             straat.setText(cursor.getString(colStraat));
             aantal_controles.setText(cursor.getString(colControles));
+//            cursor.moveToNext();
         }
     }
     /**
@@ -153,6 +170,19 @@ public class PolitieOvertredingFragment extends ListFragment implements LoaderMa
         double[] latlong =new double[]{Double.parseDouble(lat),Double.parseDouble(lo)};
         Intent intent = new Intent(this.getActivity(), MapsActivity.class);
         intent.putExtra("Latlong",latlong);
+        intent.putExtra("Title",c.getString(7));
+        intent.putExtra("aantalcontroles", c.getInt(c.getColumnIndex(Contract.snelheidColumns.COLUMN_AANTAL_CONTROLES)));
+        intent.putExtra("voetruigen", c.getInt(c.getColumnIndex(Contract.snelheidColumns.COLUMN_GEPASSEERDE_VOERTUIGEN)));
+        intent.putExtra("overtredingen", c.getInt(c.getColumnIndex(Contract.snelheidColumns.COLUMN_VTG_IN_OVERTREDING)));
+        intent.putExtra("maand", c.getInt(c.getColumnIndex(Contract.snelheidColumns.COLUMN_MAAND)));
+        int color = ((ColorDrawable) v.getBackground()).getColor();
+        if(color == Color.RED)
+            color = 0;
+        else if (color == Color.YELLOW)
+            color = 50;
+        else
+            color = 100;
+        intent.putExtra("color", color);
             startActivity(intent);
 //        getFragmentManager().beginTransaction()
 //                .add(R.id.container, new MapFragment())

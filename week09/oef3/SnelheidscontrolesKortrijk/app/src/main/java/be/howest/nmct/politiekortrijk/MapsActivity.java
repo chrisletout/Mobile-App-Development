@@ -2,13 +2,16 @@ package be.howest.nmct.politiekortrijk;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends ActionBarActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -17,8 +20,25 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+        getSupportActionBar().setTitle("Map controles");
+//        menu.add(0, Menu.FIRST+2, Menu.NONE, "Toon alle maanden");
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+//        menu.add(0, Menu.FIRST+1, Menu.NONE, "Toon alle maanden").setIcon(R.drawable.your-logout-icon);
+        menu.add(0, Menu.FIRST, Menu.NONE, "Toon alle maanden");
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        menu.add(0, Menu.FIRST, Menu.NONE, "Toon alle maanden");
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -60,6 +80,13 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        Bundle args = getIntent().getExtras();
+        double[] value= args.getDoubleArray("Latlong");
+        LatLng lng = Test.lambert72toWGS84(value[0], value[1]);
+//        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.addMarker(new MarkerOptions()
+                                        .position(lng)
+                                        .title("Aantal controles in "+args.getString("Title")+" "+args.getInt("aantalcontroles"))
+                                        .icon(BitmapDescriptorFactory.defaultMarker((float)args.getInt("color"))));
     }
 }
